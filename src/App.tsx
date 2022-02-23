@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import './App.css'
+import Search from './components/search'
+import axios, { AxiosRequestConfig } from 'axios'
+
+const BING_ENDPOINT = 'https://api.bing.microsoft.com/v7.0/search'
 
 function App() {
+  const [rows, setRows] = useState<any>(null)
+
+  const handleSearch = (value: string) => {
+    const config: AxiosRequestConfig = {
+      headers: {
+        'Ocp-Apim-Subscription-Key': String(
+          process.env.REACT_APP_SUBSCRIPTION_KEY
+        )
+      },
+      params: { q: value }
+    }
+    console.log('handleSearch', value, process.env.REACT_APP_SUBSCRIPTION_KEY)
+
+    axios.get(BING_ENDPOINT, config).then((res) => {
+      console.log('result', res)
+      setRows(res)
+    })
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Search onChange={handleSearch} />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
