@@ -1,4 +1,4 @@
-export const res = {
+export const response = {
   _type: 'SearchResponse',
   queryContext: {
     originalQuery: 'bu'

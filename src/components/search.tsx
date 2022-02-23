@@ -7,24 +7,28 @@ import SearchIcon from '@mui/icons-material/Search'
 const cacheList: string[] = []
 
 interface SearchProps {
-  onChange: (value: string) => void
+  onSearch: (value: string) => void
 }
 
-export default function Search({ onChange }: SearchProps) {
+export default function Search({ onSearch }: SearchProps) {
+  const [text, setText] = React.useState('')
   return (
     <Box sx={{ display: 'flex', m: 2 }}>
       <Autocomplete
         freeSolo
         id="free-solo-2-demo"
         disableClearable
-        onChange={(e: any) => console.log('Auto', e)}
+        onChange={(e: any) => {
+          onSearch(text)
+        }}
         options={cacheList.map((option) => option)}
         renderInput={(params) => (
           <TextField
             {...params}
             sx={{ width: 500 }}
             label="Search"
-            onChange={(e: any) => onChange(e.target.value)}
+            value={text}
+            onChange={(e: any) => setText(e.target.value)}
             InputProps={{
               ...params.InputProps,
               type: 'search'
@@ -32,7 +36,12 @@ export default function Search({ onChange }: SearchProps) {
           />
         )}
       />
-      <Button variant="contained" onClick={() => {}}>
+      <Button
+        variant="contained"
+        onClick={() => {
+          onSearch(text)
+        }}
+      >
         <SearchIcon />
       </Button>
     </Box>
